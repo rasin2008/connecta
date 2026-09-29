@@ -1,0 +1,1080 @@
+/* =========================================================
+   CONNECTA STUDENT HOME
+   FINAL DARK NAVY + PURPLE 3D UI
+========================================================= */
+
+.student-home {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 100px;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(123, 70, 255, 0.16),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 35%,
+      rgba(92, 45, 190, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #07091b 0%,
+      #0b0d25 45%,
+      #110c2d 100%
+    );
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.student-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  width: 100%;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+
+  background:
+    rgba(7, 9, 27, 0.88);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.25);
+}
+
+
+/* BRAND */
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.mini-logo {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #9b6cff,
+      #5e32db
+    );
+
+  color: white;
+
+  font-size: 19px;
+  font-weight: 900;
+
+  box-shadow:
+    0 0 20px rgba(125, 70, 255, 0.55),
+    inset 0 1px 1px rgba(255,255,255,0.25);
+
+  transform: translateZ(0);
+}
+
+.brand-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-area strong {
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 15px rgba(153, 105, 255, 0.45);
+}
+
+.location {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  margin-top: 4px;
+
+  color: #9995b3;
+
+  font-size: 10px;
+}
+
+.location svg {
+  color: #9b6cff;
+}
+
+.location-arrow {
+  color: #716b8e;
+}
+
+
+/* NOTIFICATION */
+
+.notification-button {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(164, 120, 255, 0.2);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(31, 26, 70, 0.9),
+      rgba(14, 14, 39, 0.95)
+    );
+
+  color: #b58cff;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.28),
+    inset 0 1px 1px rgba(255,255,255,0.06);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.notification-button:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(166, 112, 255, 0.55);
+
+  box-shadow:
+    0 0 22px rgba(125, 70, 255, 0.3);
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.student-container {
+  width: min(1180px, calc(100% - 64px));
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.student-container > div:first-child {
+  margin-top: 25px;
+}
+
+.student-container > div:first-child p {
+  color: #85819d !important;
+}
+
+.student-container > div:first-child h2 {
+  color: #ffffff;
+  letter-spacing: 0.2px;
+
+  text-shadow:
+    0 0 18px rgba(153, 105, 255, 0.2);
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-row {
+  width: 100%;
+
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+.search-box {
+  flex: 1;
+
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 16px;
+
+  border: 1px solid rgba(155, 108, 255, 0.18);
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(27, 24, 58, 0.96),
+      rgba(12, 13, 34, 0.96)
+    );
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.28),
+    inset 0 1px 1px rgba(255,255,255,0.04);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: rgba(157, 105, 255, 0.65);
+
+  box-shadow:
+    0 0 25px rgba(124, 66, 255, 0.2);
+}
+
+.search-box svg {
+  flex-shrink: 0;
+
+  color: #a77aff;
+}
+
+.search-box input {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.search-box input::placeholder {
+  color: #716d89;
+}
+
+
+/* FILTER */
+
+.filter-button {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(155, 108, 255, 0.2);
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #21184d,
+      #100d29
+    );
+
+  color: #a879ff;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.3);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filter-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 0 25px rgba(123, 70, 255, 0.25);
+}
+
+
+/* =========================================================
+   HERO BANNER
+========================================================= */
+
+.job-banner {
+  position: relative;
+
+  width: 100%;
+  min-height: 185px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  padding: 30px 42px;
+
+  border: 1px solid rgba(171, 123, 255, 0.25);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 90% 50%,
+      rgba(153, 92, 255, 0.5),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #2c1767,
+      #5a2bc2 55%,
+      #32127a
+    );
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 55px rgba(0,0,0,0.4),
+    0 0 40px rgba(113, 53, 255, 0.18),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+}
+
+
+/* Decorative glow */
+
+.job-banner::before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  right: 70px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(185, 135, 255, 0.15);
+
+  filter: blur(10px);
+}
+
+.job-banner::after {
+  content: "";
+
+  position: absolute;
+
+  width: 100%;
+  height: 1px;
+
+  left: 0;
+  bottom: 25px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.16),
+      transparent
+    );
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.banner-small-title {
+  display: block;
+
+  color: #d6c2ff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+.banner-content h1 {
+  margin: 7px 0 8px;
+
+  color: #ffffff;
+
+  font-size: clamp(27px, 3vw, 40px);
+
+  line-height: 1.05;
+
+  font-weight: 900;
+
+  text-shadow:
+    0 5px 20px rgba(0,0,0,0.2);
+}
+
+.banner-content p {
+  margin: 0;
+
+  color: #e0d5ff;
+
+  font-size: 13px;
+}
+
+
+/* PERSON */
+
+.banner-person {
+  position: relative;
+  z-index: 2;
+
+  width: 145px;
+  height: 145px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.person-circle {
+  width: 130px;
+  height: 130px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.03)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.14);
+
+  font-size: 65px;
+
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.25),
+    inset 0 0 35px rgba(255,255,255,0.05);
+}
+
+
+/* =========================================================
+   RECOMMENDED
+========================================================= */
+
+.recommended-section {
+  margin-top: 30px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  text-shadow:
+    0 0 18px rgba(153, 105, 255, 0.15);
+}
+
+.section-heading a {
+  color: #a879ff;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.section-heading a:hover {
+  color: #c6a6ff;
+}
+
+
+/* =========================================================
+   JOB LIST
+========================================================= */
+
+.jobs-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   JOB CARD
+========================================================= */
+
+.job-card {
+  position: relative;
+
+  min-height: 150px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 16px;
+
+  border: 1px solid rgba(156, 107, 255, 0.15);
+  border-radius: 19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28, 25, 61, 0.96),
+      rgba(12, 13, 35, 0.98)
+    );
+
+  text-decoration: none;
+  color: inherit;
+
+  box-shadow:
+    0 16px 35px rgba(0,0,0,0.35),
+    inset 0 1px 1px rgba(255,255,255,0.04);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.job-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  right: -70px;
+  top: -70px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(132, 72, 255, 0.1);
+
+  filter: blur(5px);
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(159, 108, 255, 0.45);
+
+  box-shadow:
+    0 22px 45px rgba(0,0,0,0.45),
+    0 0 25px rgba(111, 54, 255, 0.12);
+}
+
+
+/* IMAGE */
+
+.job-card img {
+  width: 92px;
+  height: 92px;
+
+  flex-shrink: 0;
+
+  object-fit: cover;
+
+  border-radius: 15px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35);
+}
+
+
+/* INFO */
+
+.job-info {
+  position: relative;
+  z-index: 2;
+
+  min-width: 0;
+  flex: 1;
+}
+
+.job-title-row {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 5px;
+}
+
+.job-title-row h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.new-badge {
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(151, 92, 255, 0.17);
+
+  border:
+    1px solid rgba(166, 110, 255, 0.28);
+
+  color: #bd9aff;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.company {
+  margin: 0 0 9px;
+
+  color: #918ca9;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.job-meta {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 14px;
+
+  margin-top: 6px;
+
+  color: #89839f;
+
+  font-size: 10px;
+}
+
+.job-meta span {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.job-meta svg {
+  color: #9c70ff;
+}
+
+.job-arrow {
+  position: relative;
+  z-index: 2;
+
+  flex-shrink: 0;
+
+  color: #766d91;
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+========================================================= */
+
+.student-bottom-nav {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 100;
+
+  width: 100%;
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(45px, 9vw, 130px);
+
+  border-top:
+    1px solid rgba(157, 107, 255, 0.13);
+
+  background:
+    rgba(8, 9, 26, 0.93);
+
+  box-shadow:
+    0 -15px 40px rgba(0,0,0,0.4);
+
+  backdrop-filter: blur(18px);
+}
+
+.bottom-nav-item {
+  min-width: 75px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #77718e;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bottom-nav-item:hover {
+  color: #b38aff;
+
+  transform: translateY(-2px);
+}
+
+.bottom-nav-item.active {
+  color: #a879ff;
+
+  text-shadow:
+    0 0 15px rgba(153, 94, 255, 0.5);
+}
+
+
+/* LOGOUT */
+
+.logout-nav-button {
+  border: none;
+
+  background: transparent;
+
+  font: inherit;
+
+  cursor: pointer;
+
+  color: inherit;
+}
+
+.logout-nav-button:hover {
+  color: #ff6b91;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .student-container {
+    width: calc(100% - 40px);
+  }
+
+  .student-header {
+    padding: 0 20px;
+  }
+
+  .job-banner {
+    padding: 25px;
+  }
+
+  .jobs-list {
+    grid-template-columns: 1fr;
+  }
+
+  .student-bottom-nav {
+    gap: 45px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .student-home {
+    padding-bottom: 85px;
+  }
+
+  .student-header {
+    height: 68px;
+
+    padding: 0 15px;
+  }
+
+  .mini-logo {
+    width: 35px;
+    height: 35px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+  }
+
+  .brand-area strong {
+    font-size: 13px;
+  }
+
+  .location {
+    font-size: 9px;
+  }
+
+  .notification-button {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 11px;
+  }
+
+  .student-container {
+    width: calc(100% - 30px);
+  }
+
+  .student-container > div:first-child {
+    margin-top: 20px;
+  }
+
+  .student-container > div:first-child h2 {
+    font-size: 21px !important;
+  }
+
+  .search-row {
+    margin-top: 15px;
+  }
+
+  .search-box {
+    height: 45px;
+
+    border-radius: 13px;
+  }
+
+  .filter-button {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 13px;
+  }
+
+  .job-banner {
+    min-height: 145px;
+
+    margin-top: 15px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+
+  .banner-small-title {
+    font-size: 12px;
+  }
+
+  .banner-content h1 {
+    font-size: 24px;
+  }
+
+  .banner-content p {
+    font-size: 10px;
+  }
+
+  .banner-person {
+    width: 85px;
+    height: 85px;
+  }
+
+  .person-circle {
+    width: 78px;
+    height: 78px;
+
+    font-size: 39px;
+  }
+
+  .recommended-section {
+    margin-top: 25px;
+  }
+
+  .section-heading h2 {
+    font-size: 16px;
+  }
+
+  .section-heading a {
+    font-size: 10px;
+  }
+
+  .job-card {
+    min-height: 116px;
+
+    padding: 11px;
+
+    gap: 11px;
+
+    border-radius: 16px;
+  }
+
+  .job-card img {
+    width: 65px;
+    height: 65px;
+
+    border-radius: 12px;
+  }
+
+  .job-title-row h3 {
+    font-size: 13px;
+  }
+
+  .company {
+    font-size: 9px;
+  }
+
+  .job-meta {
+    gap: 8px;
+
+    font-size: 8px;
+  }
+
+  .new-badge {
+    padding: 3px 6px;
+
+    font-size: 8px;
+  }
+
+  .job-arrow {
+    width: 17px;
+  }
+
+  .student-bottom-nav {
+    height: 65px;
+
+    gap: 0;
+
+    justify-content: space-around;
+  }
+
+  .bottom-nav-item {
+    min-width: 50px;
+
+    font-size: 8px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .student-container {
+    width: calc(100% - 22px);
+  }
+
+  .student-header {
+    padding: 0 11px;
+  }
+
+  .job-banner {
+    padding: 17px;
+  }
+
+  .banner-content h1 {
+    font-size: 21px;
+  }
+
+  .banner-person {
+    width: 70px;
+    height: 70px;
+  }
+
+  .person-circle {
+    width: 65px;
+    height: 65px;
+
+    font-size: 32px;
+  }
+
+  .job-card {
+    gap: 8px;
+  }
+
+  .job-card img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .job-meta {
+    gap: 5px;
+  }
+}

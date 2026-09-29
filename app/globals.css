@@ -1,26 +1,2497 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #06071d;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #06071d;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   MAIN CONNECTA
+========================================================= */
+
+.connecta {
+  --sidebar-width: 235px;
+  --auth-width: 450px;
+
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(90, 55, 220, 0.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 75% 70%,
+      rgba(120, 55, 255, 0.08),
+      transparent 35%
+    ),
+    #06071d;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+.home {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(6, 5, 27, 0.82) 0%,
+      rgba(12, 7, 43, 0.52) 38%,
+      rgba(8, 6, 30, 0.18) 72%,
+      rgba(6, 5, 25, 0.12) 100%
+    ),
+    url("/connecta-bg.png") 58% center / cover no-repeat;
+
+  transition:
+    left 0.45s ease,
+    width 0.45s ease;
+
+  z-index: 1;
+}
+
+
+/* =========================================================
+   HOME SCROLLBAR
+========================================================= */
+
+.home::-webkit-scrollbar {
+  width: 5px;
+}
+
+.home::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.home::-webkit-scrollbar-thumb {
+  background: rgba(133, 86, 255, 0.35);
+  border-radius: 20px;
+}
+
+.home::-webkit-scrollbar-thumb:hover {
+  background: rgba(133, 86, 255, 0.55);
+}
+
+
+/* =========================================================
+   SIDEBAR OPEN
+========================================================= */
+
+.connecta.sidebar-is-open .home {
+  left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+}
+
+
+/* =========================================================
+   SIDEBAR + AUTH OPEN
+========================================================= */
+
+.connecta.sidebar-is-open.auth-is-open .home {
+  left: var(--sidebar-width);
+
+  width: calc(
+    100% -
+    var(--sidebar-width) -
+    var(--auth-width)
+  );
+}
+
+
+/* =========================================================
+   HOME OVERLAY
+========================================================= */
+
+.home-overlay {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 5, 30, 0.28),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(132, 74, 255, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 75% 55%,
+      rgba(83, 49, 200, 0.08),
+      transparent 32%
+    );
+}
+
+
+/* =========================================================
+   HOME CONTENT
+========================================================= */
+
+.home-content {
+  position: relative;
+  z-index: 5;
+
+  width: min(720px, 72%);
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding:
+    70px
+    40px
+    70px
+    clamp(45px, 7vw, 110px);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   TOP BADGE
+========================================================= */
+
+.top-badge {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 8px 15px;
+  margin-bottom: 22px;
+
+  border: 1px solid rgba(157, 112, 255, 0.28);
+  border-radius: 999px;
+
+  background: rgba(105, 62, 235, 0.12);
+
+  color: #cdbbff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  box-shadow:
+    0 0 25px rgba(106, 65, 255, 0.08);
+
+  backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   STUDENT LINE
+========================================================= */
+
+.student-line {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  margin-bottom: 12px;
+}
+
+.student-line span {
+  color: rgba(255, 255, 255, 0.92);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   CONNECTA TITLE
+========================================================= */
+
+.home-content h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(54px, 7vw, 108px);
+  line-height: 0.95;
+
+  font-weight: 900;
+
+  letter-spacing: clamp(2px, 0.5vw, 8px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #e8ddff 35%,
+      #9f73ff 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 0 45px rgba(117, 70, 255, 0.16);
+}
+
+
+/* =========================================================
+   WORK EARN GROW
+========================================================= */
+
+.home-content h2 {
+  margin:
+    16px
+    0
+    15px;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(24px, 3vw, 42px);
+
+  line-height: 1.1;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   SMALL LINE
+========================================================= */
+
+.small-line {
+  width: 75px;
+  height: 4px;
+
+  margin-bottom: 20px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7c4dff,
+      #a87cff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 18px rgba(124, 77, 255, 0.55);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.home-content > p {
+  max-width: 600px;
+
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 15px;
+  line-height: 1.8;
+
+  letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   FIND JOB BUTTON
+========================================================= */
+
+.hero-action {
+  margin-top: 28px;
+}
+
+.find-jobs-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 13px;
+
+  min-width: 155px;
+
+  padding:
+    14px
+    23px;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7340ff,
+      #5423c8
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 35px
+    rgba(104, 57, 240, 0.28);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.find-jobs-button span {
+  color: #ffffff;
+
+  font-size: 20px;
+  line-height: 1;
+}
+
+.find-jobs-button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 45px
+    rgba(104, 57, 240, 0.42);
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 42px;
+
+  margin-top: 42px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.stat strong {
+  color: #ffffff;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.stat span {
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   TRUST BOX
+========================================================= */
+
+.trust-box {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  width: fit-content;
+
+  margin-top: 35px;
+
+  padding:
+    12px
+    17px;
+
+  border:
+    1px solid
+    rgba(145, 108, 255, 0.17);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 12px 35px
+    rgba(0, 0, 0, 0.18);
+}
+
+.trust-shield {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7041ef,
+      #4320a8
+    );
+
+  color: white;
+
+  box-shadow:
+    0 5px 20px
+    rgba(107, 63, 235, 0.3);
+}
+
+.trust-rating {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trust-rating strong {
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+.trust-rating span {
+  color: #a77aff;
+
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.rating-number {
+  color: #ffffff;
+
+  font-size: 12px;
+
+  margin-left: 5px;
+}
+
+
+/* =========================================================
+   SLIDER DOTS
+========================================================= */
+
+.slider-dots {
+  display: flex;
+
+  gap: 7px;
+
+  margin-top: 27px;
+}
+
+.slider-dots span {
+  display: block;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.22);
+}
+
+.slider-dots span.active {
+  width: 25px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6d3cff,
+      #a27cff
+    );
+}
+
+
+/* =========================================================
+   3D GLASS AREA
+========================================================= */
+
+.hero-3d {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 43%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GLASS CARD
+========================================================= */
+
+.glass-card {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 220px;
+
+  padding:
+    14px
+    17px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 60px
+    rgba(0, 0, 0, 0.22);
+
+  color: white;
+}
+
+.glass-card strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  margin-bottom: 4px;
+}
+
+.glass-card span {
+  display: block;
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 10px;
+}
+
+.glass-icon {
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(126, 77, 255, 0.9),
+      rgba(73, 36, 175, 0.9)
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 20px
+    rgba(104, 59, 234, 0.25);
+}
+
+
+/* =========================================================
+   GLASS CARD POSITIONS
+========================================================= */
+
+.glass-card-top {
+  top: 23%;
+  right: 14%;
+
+  transform: rotate(5deg);
+}
+
+.glass-card-location {
+  top: 47%;
+  right: 5%;
+
+  transform: rotate(-4deg);
+}
+
+.glass-card-students {
+  top: 69%;
+  right: 17%;
+
+  transform: rotate(4deg);
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
+
+.sidebar-menu-button {
+  position: fixed;
+
+  top: 16px;
+  left: 25px;
+
+  z-index: 500;
+
+  width: 78px;
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7040ed,
+      #4720a7
+    );
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 15px 40px
+    rgba(82, 42, 200, 0.38);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.sidebar-menu-button:hover {
+  transform:
+    translateY(-2px)
+    scale(1.02);
+
+  box-shadow:
+    0 20px 50px
+    rgba(82, 42, 200, 0.48);
+}
+
+.connecta.sidebar-is-open .sidebar-menu-button {
+  display: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.connecta-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: var(--sidebar-width);
+
+  z-index: 300;
+
+  display: flex;
+  flex-direction: column;
+
+  padding:
+    20px
+    14px
+    18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0b0b29 0%,
+      #090a22 100%
+    );
+
+  border-right:
+    1px solid
+    rgba(145, 106, 255, 0.12);
+
+  box-shadow:
+    20px 0 60px
+    rgba(0, 0, 0, 0.18);
+
+  transform: translateX(-105%);
+
+  transition:
+    transform 0.45s
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.connecta.sidebar-is-open .connecta-sidebar {
+  transform: translateX(0);
+}
+
+.connecta-sidebar.sidebar-visible {
+  transform: translateX(0);
+}
+
+
+/* =========================================================
+   SIDEBAR SCROLLBAR
+========================================================= */
+
+.connecta-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.connecta-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.connecta-sidebar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background:
+    rgba(133, 86, 255, 0.25);
+}
+
+
+/* =========================================================
+   SIDEBAR CLOSE BUTTON
+========================================================= */
+
+.sidebar-close-button {
+  position: absolute;
+
+  top: 18px;
+  right: 14px;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-close-button:hover {
+  background:
+    rgba(125, 75, 255, 0.18);
+
+  color: #ffffff;
+
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   SIDEBAR LOGO
+   LOGO ONLY
+   NO BOX
+   NO BORDER
+========================================================= */
+
+.sidebar-logo {
+  width: 100%;
+  height: 135px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    8px
+    40px
+    12px
+    15px;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+
+/* =========================================================
+   CONNECTA LOGO
+========================================================= */
+
+.sidebar-connecta-logo {
+  width: 125px;
+  height: 125px;
+
+  display: block;
+
+  object-fit: contain;
+  object-position: center;
+
+  background: transparent !important;
+
+  border: none !important;
+  border-radius: 0 !important;
+
+  box-shadow: none !important;
+
+  /*
+    Black background becomes invisible
+    against dark sidebar.
+  */
+  mix-blend-mode: screen;
+
+  filter:
+    brightness(1.35)
+    contrast(1.15)
+    saturate(1.15)
+    drop-shadow(
+      0 8px 22px
+      rgba(125, 65, 255, 0.5)
+    );
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.sidebar-connecta-logo:hover {
+  transform: scale(1.04);
+
+  filter:
+    brightness(1.45)
+    contrast(1.18)
+    saturate(1.2)
+    drop-shadow(
+      0 10px 30px
+      rgba(145, 80, 255, 0.65)
+    );
+}
+
+
+/* =========================================================
+   FORCE IMAGE TRANSPARENCY
+========================================================= */
+
+.sidebar-logo img {
+  background: transparent !important;
+
+  border: none !important;
+
+  border-radius: 0 !important;
+
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   SIDEBAR MENU
+========================================================= */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  margin-top: 14px;
+}
+
+
+/* =========================================================
+   SIDEBAR ITEMS
+========================================================= */
+
+.sidebar-item {
+  width: 100%;
+
+  min-height: 47px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    10px
+    12px;
+
+  border-radius: 11px;
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s ease;
+}
+
+.sidebar-item svg {
+  flex-shrink: 0;
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  transition:
+    color 0.22s ease;
+}
+
+.sidebar-item:hover {
+  color: #ffffff;
+
+  background:
+    rgba(126, 80, 255, 0.11);
+
+  transform:
+    translateX(3px);
+}
+
+.sidebar-item:hover svg {
+  color: #a77bff;
+}
+
+.sidebar-item.active {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(112, 62, 235, 0.23),
+      rgba(112, 62, 235, 0.07)
+    );
+
+  border:
+    1px solid
+    rgba(130, 83, 255, 0.12);
+}
+
+.sidebar-item.active svg {
+  color: #a378ff;
+}
+
+
+/* =========================================================
+   SIDEBAR BOTTOM
+========================================================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.login-item,
+.logout-item {
+  background: transparent;
+
+  border: 0;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   AUTH PANEL
+========================================================= */
+
+.auth-panel {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: var(--auth-width);
+
+  z-index: 400;
+
+  padding:
+    45px
+    55px;
+
+  overflow-y: auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      #090a27 0%,
+      #07081e 100%
+    );
+
+  border-left:
+    1px solid
+    rgba(145, 106, 255, 0.14);
+
+  box-shadow:
+    -25px 0 70px
+    rgba(0, 0, 0, 0.25);
+
+  transform: translateX(105%);
+
+  transition:
+    transform 0.45s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.auth-panel.auth-visible {
+  transform: translateX(0);
+}
+
+
+/* =========================================================
+   AUTH SCROLLBAR
+========================================================= */
+
+.auth-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.auth-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.auth-panel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background:
+    rgba(133, 86, 255, 0.25);
+}
+
+
+/* =========================================================
+   CLOSE AUTH
+========================================================= */
+
+.close-auth {
+  position: absolute;
+
+  top: 18px;
+  right: 20px;
+
+  width: 37px;
+  height: 37px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  color:
+    rgba(255, 255, 255, 0.7);
+
+  font-size: 25px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.close-auth:hover {
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  color: white;
+}
+
+
+/* =========================================================
+   AUTH CONTENT
+========================================================= */
+
+.auth-content {
+  width: 100%;
+
+  max-width: 410px;
+
+  margin:
+    30px
+    auto
+    0;
+}
+
+.auth-content.register {
+  margin-top: 10px;
+}
+
+
+/* =========================================================
+   AUTH LOGO
+========================================================= */
+
+.auth-logo {
+  width: 82px;
+  height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 22px;
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  background: #08091f;
+
+  border:
+    1px solid
+    rgba(150, 100, 255, 0.28);
+
+  box-shadow:
+    0 15px 40px
+    rgba(105, 55, 255, 0.35);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.auth-logo:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 20px 50px
+    rgba(115, 65, 255, 0.5);
+}
+
+.auth-connecta-logo {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  mix-blend-mode: screen;
+}
+
+
+/* =========================================================
+   AUTH TITLE
+========================================================= */
+
+.auth-content h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 29px;
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+.auth-subtitle {
+  margin:
+    9px
+    0
+    30px;
+
+  color:
+    rgba(255, 255, 255, 0.48);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUT BOX
+========================================================= */
+
+.input-box {
+  width: 100%;
+
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    0
+    15px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color:
+    rgba(255, 255, 255, 0.5);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input-box:focus-within {
+  border-color:
+    rgba(139, 91, 255, 0.65);
+
+  background:
+    rgba(126, 76, 255, 0.06);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(112, 63, 238, 0.08);
+}
+
+.input-box svg {
+  flex-shrink: 0;
+
+  color:
+    rgba(174, 140, 255, 0.75);
+}
+
+.input-box input {
+  width: 100%;
+  height: 50px;
+
+  outline: none;
+
+  border: 0;
+
+  background: transparent !important;
+
+  color: #ffffff !important;
+
+  font-size: 13px;
+}
+
+.input-box input::placeholder {
+  color:
+    rgba(255, 255, 255, 0.3);
+}
+
+
+/* =========================================================
+   PASSWORD EYE
+========================================================= */
+
+.eye {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+
+  color:
+    rgba(255, 255, 255, 0.4);
+
+  cursor: pointer;
+}
+
+.eye:hover {
+  color: #b18cff;
+}
+
+
+/* =========================================================
+   REMEMBER
+========================================================= */
+
+.remember {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin:
+    3px
+    0
+    22px;
+}
+
+.remember label {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.remember input {
+  accent-color: #7341ef;
+}
+
+.remember button {
+  padding: 0;
+
+  background: transparent;
+
+  color: #9e72ff;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.remember button:hover {
+  color: #c0a4ff;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+  width: 100%;
+  height: 52px;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7745ff,
+      #5226c8
+    );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px
+    rgba(105, 58, 235, 0.28);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.login-button:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 17px 38px
+    rgba(105, 58, 235, 0.4);
+}
+
+.login-button:active {
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================================
+   OR
+========================================================= */
+
+.or {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin:
+    25px
+    0
+    18px;
+}
+
+.or span {
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.or p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.32);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   SOCIAL
+========================================================= */
+
+.social {
+  display: flex;
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.social button {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    rgba(255, 255, 255, 0.72);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.social button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(125, 77, 255, 0.12);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   SWITCH AUTH
+========================================================= */
+
+.switch-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 24px;
+
+  padding-bottom: 20px;
+
+  color:
+    rgba(255, 255, 255, 0.42);
+
+  font-size: 11px;
+}
+
+.switch-auth button {
+  padding: 0;
+
+  background: transparent;
+
+  color: #a276ff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.switch-auth button:hover {
+  color: #c2a8ff;
+}
+
+
+/* =========================================================
+   CHROME AUTOFILL
+========================================================= */
+
+.input-box input:-webkit-autofill,
+.input-box input:-webkit-autofill:hover,
+.input-box input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+
+  -webkit-box-shadow:
+    0 0 0 1000px
+    #10102d
+    inset !important;
+
+  box-shadow:
+    0 0 0 1000px
+    #10102d
+    inset !important;
+
+  caret-color: #ffffff;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1400px) {
+
+  .connecta {
+    --sidebar-width: 235px;
+    --auth-width: 450px;
+  }
+
+  .connecta.sidebar-is-open .home-content {
+    width: 100%;
+
+    max-width: 650px;
+
+    padding-left: 60px;
+    padding-right: 20px;
+  }
+
+  .connecta.sidebar-is-open .home-content h1 {
+    font-size: 82px;
+  }
+
+  .connecta.sidebar-is-open .home-content h2 {
+    font-size: 34px;
+
+    max-width: 300px;
+  }
+
+  .connecta.sidebar-is-open .home-content > p {
+    max-width: 470px;
+  }
+
+  .connecta.sidebar-is-open .hero-3d {
+    width: 50%;
+  }
+
+  .connecta.sidebar-is-open .glass-card {
+    min-width: 245px;
+    max-width: 280px;
+  }
+
+  .connecta.sidebar-is-open .glass-card-top {
+    top: 21%;
+    right: 5%;
+
+    transform: rotate(5deg);
+  }
+
+  .connecta.sidebar-is-open .glass-card-location {
+    top: 43%;
+    right: 1%;
+
+    transform: rotate(-4deg);
+  }
+
+  .connecta.sidebar-is-open .glass-card-students {
+    top: 66%;
+    right: 5%;
+
+    transform: rotate(4deg);
+  }
+
+  .sidebar-logo {
+    height: 150px;
+  }
+
+  .sidebar-connecta-logo {
+    width: 135px;
+    height: 135px;
+  }
+}
+
+
+/* =========================================================
+   1000 - 1399
+========================================================= */
+
+@media (max-width: 1399px) and (min-width: 1001px) {
+
+  .connecta {
+    --sidebar-width: 220px;
+    --auth-width: 430px;
+  }
+
+  .connecta-sidebar {
+    width: 220px;
+  }
+
+  .sidebar-logo {
+    height: 140px;
+  }
+
+  .sidebar-connecta-logo {
+    width: 115px;
+    height: 115px;
+  }
+
+  .sidebar-item {
+    min-height: 45px;
+
+    font-size: 12px;
+  }
+
+  .connecta.sidebar-is-open .home {
+    left: 220px;
+
+    width:
+      calc(100% - 220px);
+  }
+
+  .connecta.sidebar-is-open.auth-is-open .home {
+    left: 220px;
+
+    width:
+      calc(
+        100% -
+        220px -
+        var(--auth-width)
+      );
+  }
+
+  .auth-panel {
+    padding:
+      40px
+      38px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) and (min-width: 761px) {
+
+  .connecta {
+    --sidebar-width: 240px;
+    --auth-width: 390px;
+  }
+
+  .connecta.sidebar-is-open .home-content {
+    width: 100%;
+
+    max-width: 520px;
+
+    padding-left: 35px;
+    padding-right: 20px;
+  }
+
+  .connecta.sidebar-is-open .home-content h1 {
+    font-size: 55px;
+  }
+
+  .connecta.sidebar-is-open .home-content h2 {
+    font-size: 28px;
+  }
+
+  .connecta.sidebar-is-open .hero-3d {
+    opacity: 0.45;
+  }
+
+  .connecta.sidebar-is-open .glass-card {
+    min-width: 170px;
+
+    padding:
+      11px
+      12px;
+  }
+
+  .connecta-sidebar {
+    width: 240px;
+  }
+
+  .sidebar-logo {
+    height: 135px;
+  }
+
+  .sidebar-connecta-logo {
+    width: 110px;
+    height: 110px;
+  }
+
+  .auth-panel {
+    padding:
+      35px
+      25px;
+  }
+
+  .auth-content {
+    max-width: 340px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .connecta {
+    --sidebar-width: 76px;
+
+    --auth-width:
+      calc(100vw - 76px);
+  }
+
+
+  /* HOME */
+
+  .connecta.sidebar-is-open .home {
+    left: 76px;
+
+    width:
+      calc(100% - 76px);
+  }
+
+  .connecta.sidebar-is-open.auth-is-open .home {
+    left: 76px;
+
+    width:
+      calc(
+        100% -
+        76px -
+        var(--auth-width)
+      );
+
+    opacity: 0.08;
+  }
+
+
+  /* SIDEBAR */
+
+  .connecta-sidebar {
+    width: 76px;
+
+    padding:
+      15px
+      8px;
+  }
+
+
+  /* LOGO */
+
+  .sidebar-logo {
+    width: 100%;
+
+    height: 100px;
+
+    padding:
+      5px
+      2px
+      12px;
+
+    background: transparent !important;
+
+    border: none !important;
+  }
+
+  .sidebar-connecta-logo {
+    width: 68px;
+    height: 68px;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    mix-blend-mode: screen;
+
+    filter:
+      brightness(1.35)
+      contrast(1.15)
+      saturate(1.15)
+      drop-shadow(
+        0 6px 18px
+        rgba(125, 65, 255, 0.5)
+      );
+  }
+
+
+  /* CLOSE */
+
+  .sidebar-close-button {
+    width: 32px;
+    height: 32px;
+
+    top: 12px;
+    right: 8px;
+  }
+
+
+  /* MENU */
+
+  .sidebar-item {
+    min-height: 45px;
+
+    justify-content: center;
+
+    padding:
+      10px
+      6px;
+  }
+
+  .sidebar-item span {
+    display: none;
+  }
+
+  .sidebar-item svg {
+    width: 21px;
+    height: 21px;
+  }
+
+
+  /* HOME CONTENT */
+
+  .home-content {
+    width: 100%;
+
+    padding:
+      105px
+      25px
+      60px;
+
+    justify-content: flex-start;
+  }
+
+  .home-content h1 {
+    font-size: 55px;
+  }
+
+  .home-content h2 {
+    font-size: 25px;
+  }
+
+  .home-content > p {
+    font-size: 13px;
+  }
+
+  .hero-3d {
+    display: none;
+  }
+
+
+  /* STATS */
+
+  .stats {
+    gap: 22px;
+
+    margin-top: 30px;
+  }
+
+  .stat strong {
+    font-size: 18px;
+  }
+
+  .stat span {
+    font-size: 9px;
+  }
+
+
+  /* TRUST */
+
+  .trust-box {
+    margin-top: 25px;
+
+    max-width: 100%;
+  }
+
+
+  /* AUTH */
+
+  .auth-panel {
+    width:
+      calc(100vw - 76px);
+
+    padding:
+      35px
+      22px;
+  }
+
+  .auth-content {
+    margin-top: 25px;
+  }
+
+  .auth-content h1 {
+    font-size: 24px;
+  }
+
+  .auth-logo {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 17px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .connecta {
+    --sidebar-width: 65px;
+
+    --auth-width:
+      calc(100vw - 65px);
+  }
+
+
+  /* HOME */
+
+  .connecta.sidebar-is-open .home {
+    left: 65px;
+
+    width:
+      calc(100% - 65px);
+  }
+
+  .connecta.sidebar-is-open.auth-is-open .home {
+    left: 65px;
+
+    width:
+      calc(
+        100% -
+        65px -
+        var(--auth-width)
+      );
+  }
+
+
+  /* SIDEBAR */
+
+  .connecta-sidebar {
+    width: 65px;
+  }
+
+
+  /* LOGO */
+
+  .sidebar-logo {
+    height: 85px;
+
+    padding:
+      5px
+      0
+      10px;
+
+    background: transparent !important;
+
+    border: none !important;
+  }
+
+  .sidebar-connecta-logo {
+    width: 55px;
+    height: 55px;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    mix-blend-mode: screen;
+  }
+
+
+  /* MENU BUTTON */
+
+  .sidebar-menu-button {
+    top: 12px;
+    left: 12px;
+
+    width: 62px;
+    height: 62px;
+
+    border-radius: 17px;
+  }
+
+
+  /* HOME CONTENT */
+
+  .home-content {
+    padding:
+      90px
+      18px
+      50px;
+  }
+
+  .top-badge {
+    font-size: 8px;
+
+    letter-spacing: 1px;
+  }
+
+  .home-content h1 {
+    font-size: 42px;
+  }
+
+  .home-content h2 {
+    font-size: 21px;
+  }
+
+
+  /* STATS */
+
+  .stats {
+    gap: 15px;
+  }
+
+  .stat strong {
+    font-size: 16px;
+  }
+
+  .stat span {
+    font-size: 8px;
+  }
+
+
+  /* TRUST */
+
+  .trust-box {
+    padding: 9px;
+  }
+
+  .trust-rating strong {
+    font-size: 9px;
+  }
+
+  .trust-rating span {
+    font-size: 9px;
+  }
+
+  .rating-number {
+    font-size: 9px;
+  }
+
+
+  /* AUTH */
+
+  .auth-panel {
+    width:
+      calc(100vw - 65px);
+
+    padding:
+      30px
+      16px;
+  }
+
+  .auth-content h1 {
+    font-size: 21px;
+  }
+
+  .auth-subtitle {
+    font-size: 11px;
+  }
+
+  .field label {
+    font-size: 10px;
+  }
+
+  .input-box {
+    min-height: 47px;
+  }
+
+  .input-box input {
+    height: 45px;
+
+    font-size: 11px;
+  }
+
+  .login-button {
+    height: 48px;
+  }
+}
+
+
+/* =========================================================
+   FINAL 3-COLUMN SAFETY
+========================================================= */
+
+@media (min-width: 761px) {
+
+  .connecta.sidebar-is-open .connecta-sidebar {
+    transform: translateX(0);
+  }
+
+  .connecta.sidebar-is-open.auth-is-open .auth-panel {
+    transform: translateX(0);
+  }
+
+  .connecta.sidebar-is-open .home {
+    left: var(--sidebar-width);
+
+    width:
+      calc(
+        100% -
+        var(--sidebar-width)
+      );
+  }
+
+  .connecta.sidebar-is-open.auth-is-open .home {
+    left: var(--sidebar-width);
+
+    width:
+      calc(
+        100% -
+        var(--sidebar-width) -
+        var(--auth-width)
+      );
+  }
+}
+
+
+/* =========================================================
+   FINAL LOGO SAFETY
+========================================================= */
+
+.sidebar-logo {
+  background: transparent !important;
+
+  border: none !important;
+
+  box-shadow: none !important;
+}
+
+.sidebar-connecta-logo {
+  background: transparent !important;
+
+  border: none !important;
+
+  border-radius: 0 !important;
+
+  box-shadow: none !important;
+
+  mix-blend-mode: screen;
+}
+
+
+/* =========================================================
+   LOGO DARK BACKGROUND FIX
+========================================================= */
+
+.sidebar-connecta-logo {
+  filter:
+    brightness(1.35)
+    contrast(1.15)
+    saturate(1.15)
+    drop-shadow(
+      0 8px 22px
+      rgba(125, 65, 255, 0.5)
+    );
+}
+
+
+/* =========================================================
+   LOGO HOVER
+========================================================= */
+
+.sidebar-connecta-logo:hover {
+  transform: scale(1.04);
+
+  filter:
+    brightness(1.45)
+    contrast(1.18)
+    saturate(1.2)
+    drop-shadow(
+      0 10px 30px
+      rgba(145, 80, 255, 0.65)
+    );
+}
+
+
+
+.sidebar-logo {
+  width: 100%;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  overflow: visible;
+}
+
+.sidebar-connecta-logo {
+  width: 145px;
+  height: 100px;
+
+  object-fit: contain;
+  object-position: center;
+
+  display: block;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  filter: none !important;
+  mix-blend-mode: normal;
+}
+
+/* CLOSE BUTTON - MOVE CLOSER TO LOGO */
+
+.sidebar-close {
+  position: absolute !important;
+
+  top: 28px !important;
+  left: 230px !important;
+  right: auto !important;
+
+  width: 52px !important;
+  height: 52px !important;
+
+  margin: 0 !important;
+}
+
+
+
+/* FINAL HAMBURGER SIZE + POSITION */
+
+.sidebar-menu-button {
+  position: fixed !important;
+
+  top: 22px !important;
+  left: 22px !important;
+
+  width: 58px !important;
+  height: 58px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 18px !important;
+
+  z-index: 99999 !important;
+
+  transform: none !important;
+}
+
+.sidebar-menu-button svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* =========================================================
+   HOME SCROLL + CONNECTA VISIBILITY FIX
+========================================================= */
+
+.home {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+/* CONNECTA text should never get cut */
+.home-content {
+  overflow: visible !important;
+}
+
+.home-content h1 {
+  width: max-content !important;
+  max-width: none !important;
+
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+/* Keep page itself from creating unwanted horizontal scroll */
+body {
+  overflow-x: hidden !important;
+}
+
+/* Sidebar open */
+.connecta.sidebar-is-open .home {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .home {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
 }
