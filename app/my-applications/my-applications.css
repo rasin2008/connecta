@@ -1116,3 +1116,256 @@
     align-items: flex-start;
   }
 }
+
+/* =========================================
+   RATE YOUR EXPERIENCE
+========================================= */
+
+.applications-rating-section {
+  width: 100%;
+  margin-top: 35px;
+  padding: 26px 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(22, 17, 55, 0.96),
+    rgba(39, 24, 78, 0.90)
+  );
+
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 20px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* PURPLE GLOW */
+
+.applications-rating-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  left: -80px;
+  top: -90px;
+
+  background: rgba(124, 58, 237, 0.18);
+
+  border-radius: 50%;
+
+  filter: blur(30px);
+
+  pointer-events: none;
+}
+
+
+/* STAR ICON BOX */
+
+.rating-icon-box {
+  width: 58px;
+  height: 58px;
+
+  min-width: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: rgba(139, 92, 246, 0.16);
+
+  border: 1px solid rgba(139, 92, 246, 0.35);
+
+  color: #facc15;
+
+  position: relative;
+  z-index: 1;
+}
+
+
+/* CONTENT */
+
+.rating-content {
+  flex: 1;
+
+  position: relative;
+  z-index: 1;
+}
+
+
+/* SMALL LABEL */
+
+.rating-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #a78bfa;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+
+/* TITLE */
+
+.rating-content h2 {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  font-size: 21px;
+  font-weight: 800;
+
+  letter-spacing: -0.2px;
+}
+
+
+/* DESCRIPTION */
+
+.rating-content p {
+  margin: 0;
+
+  max-width: 600px;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* BUTTON */
+
+.rating-button {
+  min-width: 155px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 13px 20px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #9333ea
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 25px rgba(124, 58, 237, 0.30);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+
+  position: relative;
+  z-index: 1;
+}
+
+
+/* BUTTON HOVER */
+
+.rating-button:hover {
+  transform: translateY(-2px);
+
+  background: linear-gradient(
+    135deg,
+    #8b5cf6,
+    #a855f7
+  );
+
+  box-shadow:
+    0 12px 30px rgba(124, 58, 237, 0.45);
+}
+
+
+/* STAR INSIDE BUTTON */
+
+.rating-button svg {
+  color: #facc15;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 760px) {
+
+  .applications-rating-section {
+    padding: 22px;
+
+    flex-wrap: wrap;
+  }
+
+  .rating-content {
+    min-width: 200px;
+  }
+
+  .rating-button {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .applications-rating-section {
+    padding: 20px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .rating-icon-box {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+  }
+
+  .rating-content h2 {
+    font-size: 19px;
+  }
+
+  .rating-content p {
+    font-size: 13px;
+  }
+
+  .rating-button {
+    width: 100%;
+  }
+
+}

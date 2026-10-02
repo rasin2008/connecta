@@ -41,7 +41,7 @@ const UserSchema = new Schema(
 
     role: {
       type: String,
-      enum: ["student", "business"],
+      enum: ["student", "business", "admin"],
       default: "student",
     },
   },
@@ -50,8 +50,6 @@ const UserSchema = new Schema(
   }
 );
 
-const User =
-  models.User ||
-  mongoose.model("User", UserSchema);
+const User = models.User || mongoose.model("User", UserSchema);
 
 export default User;

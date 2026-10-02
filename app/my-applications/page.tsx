@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+
 import {
   ArrowLeft,
   BriefcaseBusiness,
@@ -14,6 +15,7 @@ import {
   CreditCard,
   CheckCircle2,
   WalletCards,
+  Star,
 } from "lucide-react";
 
 import "./my-applications.css";
@@ -31,15 +33,18 @@ type Application = {
 };
 
 export default function MyApplicationsPage() {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [applications, setApplications] =
+    useState<Application[]>([]);
 
-  /*
-  ============================================
-  LOAD APPLICATIONS
-  ============================================
-  */
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  /* ============================================
+      LOAD APPLICATIONS
+  ============================================ */
 
   const loadApplications = async () => {
     try {
@@ -103,6 +108,7 @@ export default function MyApplicationsPage() {
       setApplications(
         data.applications || []
       );
+
     } catch (err) {
       console.error(
         "LOAD APPLICATIONS ERROR:",
@@ -114,26 +120,23 @@ export default function MyApplicationsPage() {
       );
 
       setApplications([]);
+
     } finally {
       setLoading(false);
     }
   };
 
-  /*
-  ============================================
-  LOAD ON PAGE OPEN
-  ============================================
-  */
+  /* ============================================
+      LOAD ON PAGE OPEN
+  ============================================ */
 
   useEffect(() => {
     loadApplications();
   }, []);
 
-  /*
-  ============================================
-  STATUS CLASS
-  ============================================
-  */
+  /* ============================================
+      STATUS CLASS
+  ============================================ */
 
   const getStatusClass = (
     status: Application["status"]
@@ -149,11 +152,9 @@ export default function MyApplicationsPage() {
     return "status applied";
   };
 
-  /*
-  ============================================
-  GET PAYMENT AMOUNT
-  ============================================
-  */
+  /* ============================================
+      GET PAYMENT AMOUNT
+  ============================================ */
 
   const getPaymentAmount = (
     pay: string
@@ -181,11 +182,9 @@ export default function MyApplicationsPage() {
     return Number(match[0]);
   };
 
-  /*
-  ============================================
-  OPEN PAYMENT PAGE
-  ============================================
-  */
+  /* ============================================
+      OPEN PAYMENT PAGE
+  ============================================ */
 
   const handlePayment = (
     application: Application
@@ -261,6 +260,7 @@ export default function MyApplicationsPage() {
 
         </header>
 
+
         {/* =====================================
             TITLE
         ===================================== */}
@@ -289,6 +289,7 @@ export default function MyApplicationsPage() {
           </div>
 
         </section>
+
 
         {/* =====================================
             STATS
@@ -320,6 +321,7 @@ export default function MyApplicationsPage() {
 
           </div>
 
+
           {/* UNDER REVIEW */}
 
           <div className="stat-card">
@@ -347,6 +349,7 @@ export default function MyApplicationsPage() {
             </div>
 
           </div>
+
 
           {/* ACCEPTED */}
 
@@ -378,6 +381,7 @@ export default function MyApplicationsPage() {
 
         </section>
 
+
         {/* =====================================
             ERROR
         ===================================== */}
@@ -400,6 +404,7 @@ export default function MyApplicationsPage() {
           </div>
         )}
 
+
         {/* =====================================
             LOADING
         ===================================== */}
@@ -420,6 +425,7 @@ export default function MyApplicationsPage() {
 
           </section>
         )}
+
 
         {/* =====================================
             APPLICATION LIST
@@ -451,6 +457,7 @@ export default function MyApplicationsPage() {
               </span>
 
             </div>
+
 
             {/* APPLICATION GRID */}
 
@@ -488,6 +495,7 @@ export default function MyApplicationsPage() {
 
                   </div>
 
+
                   {/* =================================
                       CONTENT
                   ================================= */}
@@ -501,6 +509,7 @@ export default function MyApplicationsPage() {
                     <p className="application-company">
                       {application.company}
                     </p>
+
 
                     <div className="application-details">
 
@@ -516,6 +525,7 @@ export default function MyApplicationsPage() {
 
                       </div>
 
+
                       {/* PAY */}
 
                       <div className="application-detail">
@@ -527,6 +537,7 @@ export default function MyApplicationsPage() {
                         </span>
 
                       </div>
+
 
                       {/* DURATION */}
 
@@ -543,6 +554,7 @@ export default function MyApplicationsPage() {
                     </div>
 
                   </div>
+
 
                   {/* =================================
                       FOOTER
@@ -578,6 +590,7 @@ export default function MyApplicationsPage() {
 
                   </div>
 
+
                   {/* =================================
                       ACCEPTED PAYMENT AREA
                   ================================= */}
@@ -590,9 +603,11 @@ export default function MyApplicationsPage() {
                       <div className="accepted-payment-info">
 
                         <div className="accepted-payment-icon">
+
                           <CheckCircle2
                             size={20}
                           />
+
                         </div>
 
                         <div>
@@ -609,6 +624,7 @@ export default function MyApplicationsPage() {
                         </div>
 
                       </div>
+
 
                       <button
                         type="button"
@@ -632,6 +648,7 @@ export default function MyApplicationsPage() {
 
                   )}
 
+
                   {/* =================================
                       APPLIED STATUS
                   ================================= */}
@@ -651,6 +668,7 @@ export default function MyApplicationsPage() {
                     </div>
 
                   )}
+
 
                   {/* =================================
                       UNDER REVIEW
@@ -681,6 +699,7 @@ export default function MyApplicationsPage() {
           </section>
 
         )}
+
 
         {/* =====================================
             EMPTY
@@ -716,6 +735,54 @@ export default function MyApplicationsPage() {
           </section>
 
         )}
+
+
+        {/* =====================================
+            RATE YOUR EXPERIENCE
+        ===================================== */}
+
+        <section className="applications-rating-section">
+
+          <div className="rating-icon-box">
+
+            <Star size={27} />
+
+          </div>
+
+
+          <div className="rating-content">
+
+            <span className="rating-label">
+              YOUR FEEDBACK
+            </span>
+
+            <h2>
+              Rate Your Experience
+            </h2>
+
+            <p>
+              Completed a job? Share your experience
+              and rate the person you worked with.
+            </p>
+
+          </div>
+
+
+          <a
+            href="https://connecta-rating-rasin2008-velora.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rating-button"
+          >
+
+            <Star size={18} />
+
+            Give a Rating
+
+          </a>
+
+        </section>
+
 
         {/* =====================================
             WALLET BUTTON

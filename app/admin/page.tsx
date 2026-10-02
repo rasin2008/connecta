@@ -79,33 +79,58 @@ export default function AdminPage() {
 
   const [adminUser, setAdminUser] = useState<UserData | null>(null);
 
+  // ==========================================
+  // ADMIN INITIAL LOAD
+  // ==========================================
+
   useEffect(() => {
     const savedUser = localStorage.getItem("connectaUser");
 
+    /*
+     * Demo admin access.
+     *
+     * If no user is logged in, still allow
+     * /admin to open for testing.
+     */
+
     if (!savedUser) {
-      window.location.href = "/";
+      setAdminUser({
+        name: "Admin",
+        email: "admin@connecta.com",
+        role: "business",
+      });
+
+      loadAdminData();
       return;
     }
 
     try {
       const user = JSON.parse(savedUser);
 
-      /*
-       * Demo admin access.
-       *
-       * For now, the admin page is accessible from a
-       * logged-in CONNECTA account.
-       *
-       * Later we can add role: "admin" to the User model.
-       */
-
       setAdminUser(user);
+
       loadAdminData();
     } catch (error) {
       console.error("ADMIN USER ERROR:", error);
-      window.location.href = "/";
+
+      /*
+       * If localStorage contains invalid data,
+       * use demo admin instead of redirecting home.
+       */
+
+      setAdminUser({
+        name: "Admin",
+        email: "admin@connecta.com",
+        role: "business",
+      });
+
+      loadAdminData();
     }
   }, []);
+
+  // ==========================================
+  // LOAD ADMIN DATA
+  // ==========================================
 
   const loadAdminData = async () => {
     try {
@@ -129,9 +154,9 @@ export default function AdminPage() {
         }),
       ]);
 
-      /*
-       * USERS
-       */
+      // ==========================================
+      // USERS
+      // ==========================================
 
       if (usersResponse.ok) {
         const usersContentType =
@@ -154,9 +179,9 @@ export default function AdminPage() {
         }
       }
 
-      /*
-       * JOBS
-       */
+      // ==========================================
+      // JOBS
+      // ==========================================
 
       if (jobsResponse.ok) {
         const jobsContentType =
@@ -179,9 +204,9 @@ export default function AdminPage() {
         }
       }
 
-      /*
-       * APPLICATIONS
-       */
+      // ==========================================
+      // APPLICATIONS
+      // ==========================================
 
       if (applicationsResponse.ok) {
         const applicationsContentType =
@@ -210,12 +235,15 @@ export default function AdminPage() {
         }
       }
 
+      // ==========================================
+      // PAYMENTS
+      // ==========================================
+
       /*
-       * PAYMENTS
+       * Payment API is user-specific.
        *
-       * Payment API is user-specific, so the admin
-       * dashboard keeps payment data empty until
-       * the admin payments API is added.
+       * Admin payment API is not available yet,
+       * so payment data stays empty.
        */
 
       setPayments([]);
@@ -230,10 +258,19 @@ export default function AdminPage() {
     }
   };
 
+  // ==========================================
+  // REFRESH
+  // ==========================================
+
   const handleRefresh = async () => {
     setRefreshing(true);
+
     await loadAdminData();
   };
+
+  // ==========================================
+  // COUNTS
+  // ==========================================
 
   const studentCount = users.filter(
     (user) => user.role === "student"
@@ -258,8 +295,13 @@ export default function AdminPage() {
       application.status === "Applied"
   ).length;
 
+  // ==========================================
+  // PAYMENT CALCULATION
+  // ==========================================
+
   const successfulPayments = payments.filter(
-    (payment) => payment.status === "Success"
+    (payment) =>
+      payment.status === "Success"
   );
 
   const totalPaymentAmount =
@@ -268,6 +310,10 @@ export default function AdminPage() {
         total + Number(payment.amount || 0),
       0
     );
+
+  // ==========================================
+  // USER SEARCH
+  // ==========================================
 
   const filteredUsers = users.filter((user) => {
     const text = search
@@ -289,6 +335,10 @@ export default function AdminPage() {
     );
   });
 
+  // ==========================================
+  // RECENT JOBS
+  // ==========================================
+
   const recentJobs = [...jobs]
     .sort((a, b) => {
       const first = a.createdAt
@@ -302,6 +352,10 @@ export default function AdminPage() {
       return second - first;
     })
     .slice(0, 5);
+
+  // ==========================================
+  // RECENT APPLICATIONS
+  // ==========================================
 
   const recentApplications = [
     ...applications,
@@ -319,6 +373,10 @@ export default function AdminPage() {
     })
     .slice(0, 5);
 
+  // ==========================================
+  // LOADING SCREEN
+  // ==========================================
+
   if (!adminUser) {
     return (
       <main className="admin-page">
@@ -328,23 +386,34 @@ export default function AdminPage() {
             className="admin-loading-icon"
           />
 
-          <h2>Loading Admin Panel...</h2>
+          <h2>
+            Loading Admin Panel...
+          </h2>
         </div>
       </main>
     );
   }
 
+  // ==========================================
+  // PAGE
+  // ==========================================
+
   return (
     <main className="admin-page">
 
-      {/* Background */}
+      {/* ==========================================
+          BACKGROUND
+      ========================================== */}
+
       <div className="admin-orb admin-orb-one" />
       <div className="admin-orb admin-orb-two" />
       <div className="admin-orb admin-orb-three" />
 
       <div className="admin-container">
 
-        {/* Header */}
+        {/* ==========================================
+            HEADER
+        ========================================== */}
 
         <header className="admin-header">
 
@@ -365,6 +434,7 @@ export default function AdminPage() {
               </div>
 
               <div>
+
                 <span className="admin-label">
                   CONNECTA ADMIN
                 </span>
@@ -375,8 +445,10 @@ export default function AdminPage() {
 
                 <p>
                   Manage users, jobs,
-                  applications and platform activity.
+                  applications and platform
+                  activity.
                 </p>
+
               </div>
 
             </div>
@@ -405,7 +477,9 @@ export default function AdminPage() {
 
         </header>
 
-        {/* Welcome */}
+        {/* ==========================================
+            WELCOME
+        ========================================== */}
 
         <section className="admin-welcome">
 
@@ -414,25 +488,32 @@ export default function AdminPage() {
           </div>
 
           <div>
+
             <span>
               ADMIN CONTROL CENTER
             </span>
 
             <h2>
-              Welcome, {adminUser.name || "Admin"}
+              Welcome,{" "}
+              {adminUser.name || "Admin"}
             </h2>
 
             <p>
-              Monitor CONNECTA activity from
-              one place.
+              Monitor CONNECTA activity
+              from one place.
             </p>
+
           </div>
 
         </section>
 
-        {/* Main Stats */}
+        {/* ==========================================
+            MAIN STATS
+        ========================================== */}
 
         <section className="admin-stats">
+
+          {/* USERS */}
 
           <div className="admin-stat-card purple-card">
 
@@ -441,18 +522,24 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <span>Total Users</span>
 
               <strong>
-                {loading ? "..." : users.length}
+                {loading
+                  ? "..."
+                  : users.length}
               </strong>
 
               <small>
                 {studentCount} students
               </small>
+
             </div>
 
           </div>
+
+          {/* BUSINESSES */}
 
           <div className="admin-stat-card blue-card">
 
@@ -461,6 +548,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <span>Businesses</span>
 
               <strong>
@@ -472,9 +560,12 @@ export default function AdminPage() {
               <small>
                 Registered businesses
               </small>
+
             </div>
 
           </div>
+
+          {/* JOBS */}
 
           <div className="admin-stat-card orange-card">
 
@@ -483,6 +574,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <span>Total Jobs</span>
 
               <strong>
@@ -494,9 +586,12 @@ export default function AdminPage() {
               <small>
                 Posted opportunities
               </small>
+
             </div>
 
           </div>
+
+          {/* APPLICATIONS */}
 
           <div className="admin-stat-card green-card">
 
@@ -505,6 +600,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <span>Applications</span>
 
               <strong>
@@ -516,15 +612,20 @@ export default function AdminPage() {
               <small>
                 Student applications
               </small>
+
             </div>
 
           </div>
 
         </section>
 
-        {/* Secondary Stats */}
+        {/* ==========================================
+            SECONDARY STATS
+        ========================================== */}
 
         <section className="admin-secondary-stats">
+
+          {/* APPLIED */}
 
           <div className="secondary-stat">
 
@@ -533,11 +634,20 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <span>New Applications</span>
-              <strong>{appliedCount}</strong>
+
+              <span>
+                New Applications
+              </span>
+
+              <strong>
+                {appliedCount}
+              </strong>
+
             </div>
 
           </div>
+
+          {/* REVIEW */}
 
           <div className="secondary-stat">
 
@@ -546,11 +656,20 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <span>Under Review</span>
-              <strong>{reviewCount}</strong>
+
+              <span>
+                Under Review
+              </span>
+
+              <strong>
+                {reviewCount}
+              </strong>
+
             </div>
 
           </div>
+
+          {/* ACCEPTED */}
 
           <div className="secondary-stat">
 
@@ -559,11 +678,20 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <span>Accepted</span>
-              <strong>{acceptedCount}</strong>
+
+              <span>
+                Accepted
+              </span>
+
+              <strong>
+                {acceptedCount}
+              </strong>
+
             </div>
 
           </div>
+
+          {/* PAYMENTS */}
 
           <div className="secondary-stat">
 
@@ -572,21 +700,33 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <span>Payments</span>
+
+              <span>
+                Payments
+              </span>
+
               <strong>
-                ₹{totalPaymentAmount.toLocaleString("en-IN")}
+                ₹
+                {totalPaymentAmount.toLocaleString(
+                  "en-IN"
+                )}
               </strong>
+
             </div>
 
           </div>
 
         </section>
 
-        {/* Main Grid */}
+        {/* ==========================================
+            MAIN GRID
+        ========================================== */}
 
         <section className="admin-main-grid">
 
-          {/* Recent Jobs */}
+          {/* ==========================================
+              RECENT JOBS
+          ========================================== */}
 
           <div className="admin-panel">
 
@@ -617,8 +757,15 @@ export default function AdminPage() {
             {recentJobs.length === 0 ? (
 
               <div className="admin-empty">
-                <BriefcaseBusiness size={30} />
-                <p>No jobs found.</p>
+
+                <BriefcaseBusiness
+                  size={30}
+                />
+
+                <p>
+                  No jobs found.
+                </p>
+
               </div>
 
             ) : (
@@ -636,7 +783,9 @@ export default function AdminPage() {
                   >
 
                     <div className="list-icon job">
-                      <BriefcaseBusiness size={19} />
+                      <BriefcaseBusiness
+                        size={19}
+                      />
                     </div>
 
                     <div className="list-content">
@@ -673,7 +822,9 @@ export default function AdminPage() {
 
           </div>
 
-          {/* Recent Applications */}
+          {/* ==========================================
+              RECENT APPLICATIONS
+          ========================================== */}
 
           <div className="admin-panel">
 
@@ -704,10 +855,13 @@ export default function AdminPage() {
             {recentApplications.length === 0 ? (
 
               <div className="admin-empty">
+
                 <FileText size={30} />
+
                 <p>
                   No applications found.
                 </p>
+
               </div>
 
             ) : (
@@ -730,7 +884,9 @@ export default function AdminPage() {
 
                         <strong>
                           Student #
-                          {application.userId.slice(-6)}
+                          {application.userId.slice(
+                            -6
+                          )}
                         </strong>
 
                         <span>
@@ -767,7 +923,9 @@ export default function AdminPage() {
 
         </section>
 
-        {/* Users */}
+        {/* ==========================================
+            USERS
+        ========================================== */}
 
         <section className="admin-panel users-panel">
 
@@ -791,6 +949,8 @@ export default function AdminPage() {
 
           </div>
 
+          {/* SEARCH */}
+
           <div className="admin-search">
 
             <Search size={19} />
@@ -805,6 +965,7 @@ export default function AdminPage() {
             />
 
             {search && (
+
               <button
                 type="button"
                 onClick={() =>
@@ -813,6 +974,7 @@ export default function AdminPage() {
               >
                 ×
               </button>
+
             )}
 
           </div>
@@ -820,11 +982,13 @@ export default function AdminPage() {
           {filteredUsers.length === 0 ? (
 
             <div className="admin-empty">
+
               <Users size={30} />
 
               <p>
                 No users found.
               </p>
+
             </div>
 
           ) : (
@@ -834,12 +998,27 @@ export default function AdminPage() {
               <table className="users-table">
 
                 <thead>
+
                   <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Location</th>
+
+                    <th>
+                      User
+                    </th>
+
+                    <th>
+                      Email
+                    </th>
+
+                    <th>
+                      Role
+                    </th>
+
+                    <th>
+                      Location
+                    </th>
+
                   </tr>
+
                 </thead>
 
                 <tbody>
@@ -861,7 +1040,9 @@ export default function AdminPage() {
                           <div className="table-user">
 
                             <div className="table-avatar">
-                              <UserRound size={18} />
+                              <UserRound
+                                size={18}
+                              />
                             </div>
 
                             <strong>
@@ -904,9 +1085,13 @@ export default function AdminPage() {
 
         </section>
 
-        {/* Quick Actions */}
+        {/* ==========================================
+            QUICK ACTIONS
+        ========================================== */}
 
         <section className="quick-actions">
+
+          {/* POST JOB */}
 
           <Link
             href="/post-job"
@@ -918,6 +1103,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <strong>
                 Post New Job
               </strong>
@@ -925,11 +1111,14 @@ export default function AdminPage() {
               <span>
                 Create a new opportunity
               </span>
+
             </div>
 
             <ArrowRight size={18} />
 
           </Link>
+
+          {/* APPLICATIONS */}
 
           <Link
             href="/business-applications"
@@ -941,6 +1130,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <strong>
                 Applications
               </strong>
@@ -948,11 +1138,14 @@ export default function AdminPage() {
               <span>
                 Review student applications
               </span>
+
             </div>
 
             <ArrowRight size={18} />
 
           </Link>
+
+          {/* WALLET */}
 
           <Link
             href="/wallet"
@@ -964,6 +1157,7 @@ export default function AdminPage() {
             </div>
 
             <div>
+
               <strong>
                 Wallet
               </strong>
@@ -971,6 +1165,7 @@ export default function AdminPage() {
               <span>
                 View payment activity
               </span>
+
             </div>
 
             <ArrowRight size={18} />
@@ -979,13 +1174,18 @@ export default function AdminPage() {
 
         </section>
 
-        {/* Footer */}
+        {/* ==========================================
+            FOOTER
+        ========================================== */}
 
         <footer className="admin-footer">
 
           <div className="footer-brand">
+
             <ShieldCheck size={17} />
+
             CONNECTA Admin
+
           </div>
 
           <span>
@@ -1000,6 +1200,10 @@ export default function AdminPage() {
   );
 }
 
+// ==========================================
+// EYE ICON
+// ==========================================
+
 function EyeIcon() {
   return (
     <svg
@@ -1013,7 +1217,12 @@ function EyeIcon() {
       strokeLinejoin="round"
     >
       <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-      <circle cx="12" cy="12" r="3" />
+
+      <circle
+        cx="12"
+        cy="12"
+        r="3"
+      />
     </svg>
   );
 }

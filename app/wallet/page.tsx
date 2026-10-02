@@ -30,7 +30,7 @@ export default function WalletPage() {
   const [userId, setUserId] = useState("");
   const [balance, setBalance] = useState(0);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const loadPayments = async (id: string) => {
@@ -39,13 +39,28 @@ export default function WalletPage() {
       setError("");
 
       const response = await fetch(
-        `/api/payment/my?userId=${encodeURIComponent(id)}`
+        `/api/payment/my?userId=${encodeURIComponent(id)}`,
+        {
+          cache: "no-store",
+        }
       );
+
+      const contentType =
+        response.headers.get("content-type") || "";
+
+      if (!contentType.includes("application/json")) {
+        setError(
+          `Wallet API error. Status: ${response.status}`
+        );
+        return;
+      }
 
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        setError(data.message || "Failed to load wallet.");
+        setError(
+          data.message || "Failed to load wallet."
+        );
         return;
       }
 
@@ -60,29 +75,46 @@ export default function WalletPage() {
   };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("connectaUser");
-
-    if (!savedUser) {
-      router.replace("/");
-      return;
-    }
-
     try {
-      const user = JSON.parse(savedUser);
-      const id = user.id || user._id || "";
+      const savedUser =
+        localStorage.getItem("connectaUser");
 
-      if (!id) {
-        router.replace("/");
+      /*
+       * Wallet page open aakan login mandatory
+       * aakkunnilla.
+       *
+       * Login illenkil demo wallet open aakum.
+       */
+
+      if (!savedUser) {
+        setUserId("demo-user");
+        setLoading(false);
         return;
       }
 
-      setUserId(id);
-      loadPayments(id);
+      const user = JSON.parse(savedUser);
+
+      const id = user.id || user._id || "";
+
+      if (!id) {
+        setUserId("demo-user");
+        setLoading(false);
+        return;
+      }
+
+      setUserId(String(id));
+
+      loadPayments(String(id));
     } catch (error) {
-      console.error("USER LOAD ERROR:", error);
-      router.replace("/");
+      console.error(
+        "WALLET USER ERROR:",
+        error
+      );
+
+      setUserId("demo-user");
+      setLoading(false);
     }
-  }, [router]);
+  }, []);
 
   const getMethodIcon = (method: string) => {
     if (method === "UPI") {
@@ -97,20 +129,41 @@ export default function WalletPage() {
   };
 
   const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+    if (!date) {
+      return "-";
+    }
+
+    return new Date(date).toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
   };
+
+  const successfulPayments =
+    payments.filter(
+      (payment) =>
+        payment.status === "Success"
+    ).length;
+
+  const pendingPayments =
+    payments.filter(
+      (payment) =>
+        payment.status === "Pending"
+    ).length;
 
   return (
     <main className="wallet-page">
       <div className="wallet-container">
 
-        {/* Header */}
+        {/* HEADER */}
+
         <header className="wallet-header">
           <button
+            type="button"
             className="wallet-back"
             onClick={() => router.back()}
           >
@@ -123,29 +176,47 @@ export default function WalletPage() {
           </div>
 
           <button
+            type="button"
             className="wallet-refresh"
-            onClick={() => userId && loadPayments(userId)}
+            onClick={() => {
+              if (
+                userId &&
+                userId !== "demo-user"
+              ) {
+                loadPayments(userId);
+              }
+            }}
             disabled={loading}
           >
             <RefreshCw
               size={19}
-              className={loading ? "wallet-spin" : ""}
+              className={
+                loading
+                  ? "wallet-spin"
+                  : ""
+              }
             />
           </button>
         </header>
 
-        {/* Balance */}
+        {/* BALANCE */}
+
         <section className="wallet-balance-card">
           <div className="wallet-balance-top">
             <div className="wallet-icon">
               <WalletCards size={28} />
             </div>
 
-            <span>Available Balance</span>
+            <span>
+              Available Balance
+            </span>
           </div>
 
           <h2>
-            ₹{balance.toLocaleString("en-IN")}
+            ₹
+            {balance.toLocaleString(
+              "en-IN"
+            )}
           </h2>
 
           <div className="wallet-balance-bottom">
@@ -154,45 +225,48 @@ export default function WalletPage() {
           </div>
         </section>
 
-        {/* Quick Stats */}
+        {/* QUICK STATS */}
+
         <section className="wallet-stats">
           <div className="wallet-stat-card">
             <CheckCircle2 size={20} />
+
             <div>
               <strong>
-                {
-                  payments.filter(
-                    (payment) => payment.status === "Success"
-                  ).length
-                }
+                {successfulPayments}
               </strong>
-              <span>Successful</span>
+
+              <span>
+                Successful
+              </span>
             </div>
           </div>
 
           <div className="wallet-stat-card">
             <Clock3 size={20} />
+
             <div>
               <strong>
-                {
-                  payments.filter(
-                    (payment) => payment.status === "Pending"
-                  ).length
-                }
+                {pendingPayments}
               </strong>
-              <span>Pending</span>
+
+              <span>
+                Pending
+              </span>
             </div>
           </div>
         </section>
 
-        {/* Error */}
+        {/* ERROR */}
+
         {error && (
           <div className="wallet-error">
             {error}
           </div>
         )}
 
-        {/* Payment History */}
+        {/* PAYMENT HISTORY */}
+
         <section className="payment-history">
           <div className="section-heading">
             <div>
@@ -200,7 +274,9 @@ export default function WalletPage() {
               <h2>Payment History</h2>
             </div>
 
-            <span>{payments.length} Payments</span>
+            <span>
+              {payments.length} Payments
+            </span>
           </div>
 
           {loading ? (
@@ -209,7 +285,10 @@ export default function WalletPage() {
                 size={25}
                 className="wallet-spin"
               />
-              <p>Loading payments...</p>
+
+              <p>
+                Loading payments...
+              </p>
             </div>
           ) : payments.length === 0 ? (
             <div className="wallet-empty">
@@ -217,13 +296,17 @@ export default function WalletPage() {
                 <WalletCards size={30} />
               </div>
 
-              <h3>No payments yet</h3>
+              <h3>
+                No payments yet
+              </h3>
 
               <p>
-                Your successful demo payments will appear here.
+                Your successful demo
+                payments will appear here.
               </p>
 
               <button
+                type="button"
                 onClick={() =>
                   router.push(
                     "/payment?jobId=1001&amount=800"
@@ -235,62 +318,78 @@ export default function WalletPage() {
             </div>
           ) : (
             <div className="payment-list">
-              {payments.map((payment) => (
-                <div
-                  className="payment-item"
-                  key={payment._id}
-                >
-                  <div className="payment-method-icon">
-                    {getMethodIcon(payment.method)}
-                  </div>
-
-                  <div className="payment-info">
-                    <strong>
-                      Job #{payment.jobId}
-                    </strong>
-
-                    <span>
-                      {payment.method} •{" "}
-                      {formatDate(payment.createdAt)}
-                    </span>
-                  </div>
-
-                  <div className="payment-right">
-                    <strong>
-                      + ₹
-                      {payment.amount.toLocaleString(
-                        "en-IN"
+              {payments.map(
+                (payment) => (
+                  <div
+                    className="payment-item"
+                    key={payment._id}
+                  >
+                    <div className="payment-method-icon">
+                      {getMethodIcon(
+                        payment.method
                       )}
-                    </strong>
+                    </div>
 
-                    <span
-                      className={
-                        payment.status === "Success"
-                          ? "payment-success"
-                          : payment.status === "Pending"
-                          ? "payment-pending"
-                          : "payment-failed"
-                      }
-                    >
-                      {payment.status}
-                    </span>
+                    <div className="payment-info">
+                      <strong>
+                        Job #
+                        {payment.jobId}
+                      </strong>
+
+                      <span>
+                        {payment.method}{" "}
+                        •{" "}
+                        {formatDate(
+                          payment.createdAt
+                        )}
+                      </span>
+                    </div>
+
+                    <div className="payment-right">
+                      <strong>
+                        + ₹
+                        {Number(
+                          payment.amount
+                        ).toLocaleString(
+                          "en-IN"
+                        )}
+                      </strong>
+
+                      <span
+                        className={
+                          payment.status ===
+                          "Success"
+                            ? "payment-success"
+                            : payment.status ===
+                              "Pending"
+                            ? "payment-pending"
+                            : "payment-failed"
+                        }
+                      >
+                        {payment.status}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           )}
         </section>
 
-        {/* Demo Notice */}
+        {/* DEMO NOTICE */}
+
         <div className="wallet-demo-notice">
           <WalletCards size={20} />
 
           <div>
-            <strong>Demo Wallet</strong>
+            <strong>
+              Demo Wallet
+            </strong>
 
             <p>
-              This wallet is for CONNECTA demo purposes.
-              No real money is transferred.
+              This wallet is for CONNECTA
+              demo purposes. No real money
+              is transferred.
             </p>
           </div>
         </div>

@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 import Payment from "@/models/Payment";
-import Notification from "@/models/Notifications";
 
 export async function POST(request: Request) {
   try {
-    await dbConnect();
+    await connectDB();
 
     const body = await request.json();
 
@@ -16,41 +15,41 @@ export async function POST(request: Request) {
       method,
     } = body;
 
-    // Required fields
-    if (!userId || jobId === undefined || !amount || !method) {
+    if (!userId) {
       return NextResponse.json(
         {
           success: false,
-          message: "All payment fields are required.",
+          message: "User ID is required.",
         },
         { status: 400 }
       );
     }
 
-    // Validate amount
-    const numericAmount = Number(amount);
+    if (!jobId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Job ID is required.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (!amount || Number(amount) <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Valid payment amount is required.",
+        },
+        { status: 400 }
+      );
+    }
 
     if (
-      Number.isNaN(numericAmount) ||
-      numericAmount <= 0
+      !["UPI", "Card", "Net Banking"].includes(
+        method
+      )
     ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid payment amount.",
-        },
-        { status: 400 }
-      );
-    }
-
-    // Allowed demo payment methods
-    const allowedMethods = [
-      "UPI",
-      "Card",
-      "Net Banking",
-    ];
-
-    if (!allowedMethods.includes(method)) {
       return NextResponse.json(
         {
           success: false,
@@ -60,51 +59,35 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create demo payment
     const payment = await Payment.create({
-      userId,
+      userId: String(userId),
       jobId: Number(jobId),
-      amount: numericAmount,
+      amount: Number(amount),
       method,
       status: "Success",
-    });
-
-    // -----------------------------------------
-    // PAYMENT SUCCESS NOTIFICATION
-    // -----------------------------------------
-
-    await Notification.create({
-      userId,
-      type: "payment",
-      title: "Payment Successful",
-      message: `Your payment of ₹${numericAmount} was successful.`,
-      link: "/wallet",
-      read: false,
     });
 
     return NextResponse.json(
       {
         success: true,
-        message: "Demo payment successful.",
-        payment: {
-          id: payment._id.toString(),
-          userId: payment.userId,
-          jobId: payment.jobId,
-          amount: payment.amount,
-          method: payment.method,
-          status: payment.status,
-          createdAt: payment.createdAt,
-        },
+        message: "Payment successful.",
+        payment,
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error("DEMO PAYMENT ERROR:", error);
+    console.error(
+      "CREATE PAYMENT ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
         success: false,
-        message: "Demo payment failed.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Payment failed.",
       },
       { status: 500 }
     );
