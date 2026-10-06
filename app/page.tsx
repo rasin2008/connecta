@@ -92,10 +92,8 @@ export default function HomePage() {
   ===================================================== */
 
   const navigateTo = (path: string) => {
-    /*
-      If the user is not logged in,
-      open the Login panel instead of the requested page.
-    */
+    // If the user is not logged in,
+    // open Login instead of navigating.
 
     if (!loggedIn) {
       setAuthMode("login");
@@ -104,10 +102,8 @@ export default function HomePage() {
       return;
     }
 
-    /*
-      If the user is logged in,
-      open the requested page.
-    */
+    // If the user is logged in,
+    // navigate to the requested page.
 
     setSidebarOpen(false);
     setAuthOpen(false);
@@ -189,35 +185,50 @@ export default function HomePage() {
         return;
       }
 
-      alert(
-        "Registration successful! Please login to continue."
-      );
-
       /*
-        After registration, do not log the user in automatically.
-        Open the Login panel.
+        Registration successful.
+
+        IMPORTANT:
+        Do NOT use router.push() here.
+        Do NOT use router.replace() here.
+        User must stay on the same Home page.
       */
 
-      setAuthMode("login");
-      setAuthOpen(true);
-      setSidebarOpen(true);
+      alert("Registration successful! Please login to continue.");
 
       setLoggedIn(false);
       setUserRole("");
 
       /*
-        The registered email will be automatically
-        shown in the Login field.
+        Keep the registered email
+        for the Login panel.
       */
 
       setEmail(data.user.email);
 
       /*
-        The user needs to enter the password again.
+        Password must be entered again.
       */
 
       setPassword("");
       setConfirmPassword("");
+
+      /*
+        Clear other registration fields.
+      */
+
+      setName("");
+      setPhone("");
+      setLocation("");
+      setEducation("");
+
+      /*
+        Open Login panel on the same page.
+      */
+
+      setAuthMode("login");
+      setSidebarOpen(true);
+      setAuthOpen(true);
 
     } catch (error) {
       console.error("REGISTER ERROR:", error);
@@ -265,14 +276,21 @@ export default function HomePage() {
 
       setLoggedIn(true);
       setUserRole(data.user.role || "");
+
       setAuthOpen(false);
       setSidebarOpen(false);
+
+      /*
+        Login success navigation.
+        Register function does NOT have navigation.
+      */
 
       if (data.user.role === "business") {
         router.push("/dashboard");
       } else {
         router.push("/home-student");
       }
+
     } catch (error) {
       console.error("LOGIN ERROR:", error);
       alert("Something went wrong. Please try again.");
@@ -324,12 +342,14 @@ export default function HomePage() {
         sidebarOpen ? "sidebar-is-open" : ""
       } ${authOpen ? "auth-is-open" : ""}`}
     >
+
       {/* =================================================
           MENU BUTTON
       ================================================= */}
 
       {!sidebarOpen && (
         <button
+          type="button"
           className="sidebar-menu-button"
           onClick={() => setSidebarOpen(true)}
           aria-label="Open menu"
@@ -347,6 +367,7 @@ export default function HomePage() {
           sidebarOpen ? "sidebar-visible" : ""
         }`}
       >
+
         {/* LOGO */}
 
         <div className="sidebar-logo">
@@ -360,6 +381,7 @@ export default function HomePage() {
         {/* CLOSE BUTTON */}
 
         <button
+          type="button"
           className="sidebar-close-button"
           onClick={() => setSidebarOpen(false)}
           aria-label="Close menu"
@@ -479,6 +501,7 @@ export default function HomePage() {
             <Settings size={24} />
             <span>Settings</span>
           </button>
+
         </nav>
 
         {/* =================================================
@@ -526,7 +549,9 @@ export default function HomePage() {
               <span>Logout</span>
             </button>
           )}
+
         </div>
+
       </aside>
 
       {/* =================================================
@@ -713,6 +738,7 @@ export default function HomePage() {
         {/* CLOSE AUTH */}
 
         <button
+          type="button"
           className="close-auth"
           onClick={closeAuth}
           aria-label="Close authentication"
@@ -1040,7 +1066,12 @@ export default function HomePage() {
 
               </label>
 
-              <button type="button">
+              <button
+                type="button"
+                onClick={() =>
+                  alert("Forgot password feature coming soon.")
+                }
+              >
                 Forgot password?
               </button>
 
@@ -1052,6 +1083,7 @@ export default function HomePage() {
           ================================================= */}
 
           <button
+            type="button"
             className="login-button"
             onClick={
               authMode === "login"
@@ -1088,15 +1120,30 @@ export default function HomePage() {
 
               <div className="social">
 
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() =>
+                    alert("Google login coming soon.")
+                  }
+                >
                   <FaGoogle />
                 </button>
 
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() =>
+                    alert("Apple login coming soon.")
+                  }
+                >
                   <FaApple />
                 </button>
 
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() =>
+                    alert("Facebook login coming soon.")
+                  }
+                >
                   <FaFacebookF />
                 </button>
 
@@ -1141,4 +1188,3 @@ export default function HomePage() {
     </main>
   );
 }
-
