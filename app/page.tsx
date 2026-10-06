@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -92,8 +93,8 @@ export default function HomePage() {
 
   const navigateTo = (path: string) => {
     /*
-      Login ചെയ്തിട്ടില്ലെങ്കിൽ
-      page open ചെയ്യാതെ Login panel open ചെയ്യും.
+      If the user is not logged in,
+      open the Login panel instead of the requested page.
     */
 
     if (!loggedIn) {
@@ -104,8 +105,8 @@ export default function HomePage() {
     }
 
     /*
-      Login ചെയ്തിട്ടുണ്ടെങ്കിൽ
-      requested page open ചെയ്യും.
+      If the user is logged in,
+      open the requested page.
     */
 
     setSidebarOpen(false);
@@ -188,21 +189,36 @@ export default function HomePage() {
         return;
       }
 
-      localStorage.setItem(
-        "connectaUser",
-        JSON.stringify(data.user)
+      alert(
+        "Registration successful! Please login to continue."
       );
 
-      setLoggedIn(true);
-      setUserRole(data.user.role || "");
-      setAuthOpen(false);
-      setSidebarOpen(false);
+      /*
+        After registration, do not log the user in automatically.
+        Open the Login panel.
+      */
 
-      if (data.user.role === "business") {
-        router.push("/dashboard");
-      } else {
-        router.push("/home-student");
-      }
+      setAuthMode("login");
+      setAuthOpen(true);
+      setSidebarOpen(true);
+
+      setLoggedIn(false);
+      setUserRole("");
+
+      /*
+        The registered email will be automatically
+        shown in the Login field.
+      */
+
+      setEmail(data.user.email);
+
+      /*
+        The user needs to enter the password again.
+      */
+
+      setPassword("");
+      setConfirmPassword("");
+
     } catch (error) {
       console.error("REGISTER ERROR:", error);
       alert("Something went wrong. Please try again.");
@@ -1125,3 +1141,4 @@ export default function HomePage() {
     </main>
   );
 }
+
